@@ -1,5 +1,6 @@
 import sys
-from run import run_free, run_company
+from free import run_free
+from company import run_company
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5.QtGui import QIcon, QPalette, QBrush, QPixmap   # 图标与字体
 from PyQt5.QtWidgets import QDesktopWidget, QMessageBox, QPushButton, QHBoxLayout, \
@@ -41,17 +42,21 @@ class Login(QMainWindow):
 
         self.setLayout(vbox)
 
+    windowList = []
     def buttonclicked(self):
         text = self.sender()
         print(text.text())
         if text.text() == '免费版':
-            main = run_free(self)
+            free_main = run_free(self)
+            self.windowList.append(free_main)
             self.close()
-            main.exec()
+            free_main.show()
+
         if text.text() == '企业版':
-            main = run_company(self)
+            company_main = run_company(self)
+            self.windowList.append(company_main)
             self.close()
-            main.exec()
+            company_main.exec()
 
     def resizeEvent(self, event):
         palette = QPalette()
