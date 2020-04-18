@@ -1,5 +1,5 @@
 """
-数据库为全空时，使用这个函数
+物价数据库为全空时，使用这个函数
 """
 
 from selenium import webdriver
@@ -24,7 +24,7 @@ wait = WebDriverWait(browser, 100)
 client = pymongo.MongoClient(host='localhost', port=27017)
 db = client.rept    # 数据库的名称
 
-all_num = [1, 9, 19, 59]    # 大类
+all_num = [1]#, 9, 19, 59]    # 大类
 class_num = [[2, 6], [10, 13], [20, 24, 26, 31, 36, 40, 43, 45, 51, 54, 57], [60, 63, 65, 68]]  # 小类
 point_num = [[5, 4], [4, 7], [5, 3, 6, 6, 5, 4, 3, 7, 4, 4, 3], [4, 3, 4, 3]]   # 小类下的产品个数+2
 col = ['meat', 'aqua', 'vege', 'frut']
@@ -80,7 +80,7 @@ def get_products(level, sm_level, classification):    # 获取产品
                                                                                 '> tr:nth-child('
                                                                                  + str(p) + ') > td:nth-child('
                                                                                  + str(z) + ') > span'))).text
-            product.setdefault('time_price', {})[times] = price
+            product.setdefault('time_price', {})[times] = price     # 字典中的值通过设置成为另一个集合
         # 文件生成放入数据库
         result = collection.insert_one(product)
         print(product)
@@ -89,11 +89,3 @@ def get_products(level, sm_level, classification):    # 获取产品
 if __name__ == '__main__':
     reptile()
     browser.close()
-
-
-#tab > table > tbody > tr:nth-child(13) > td.crosstabNodeMember > span
-
-#tab1 > table > tbody > tr:nth-child(2) > td.crosstabNodeMember > span
-
-#tab1 > table > tbody > tr:nth-child(4) > td.crosstabNodeMember > span
-#tree农产品批发价格数据_2_span

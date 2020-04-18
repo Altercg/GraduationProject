@@ -1,3 +1,6 @@
+"""
+后期维护物价数据库时，使用此文件来更新
+"""
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -19,20 +22,18 @@ wait = WebDriverWait(browser, 100)
 # 数据库准备操作
 client = pymongo.MongoClient(host='localhost', port=27017)
 db = client.rept
-all_num = [1, 9, 19, 59]
+all_num = [1]   # , 9, 19, 59]
 point_num = [7, 9, 30, 8]
 col = ['meat', 'aqua', 'vege', 'frut']
 
 
 def reptile():      # 获得大分类，畜禽 水产 蔬菜 水果
     wait.until(EC.frame_to_be_available_and_switch_to_it((By.ID, 'reportIframe')))
-    time.sleep(3)
     level = 0
     for i in all_num:
         name = '#tree农产品批发价格数据_'+str(i)+'_span'
-        tree = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, name)))
+        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, name))).click()
         time.sleep(3)
-        tree.click()
         wait.until(EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR, 'body > div.searchpanel '
                                                                                '> div.searchpanelright '
                                                                                '> div.searchtarget > iframe')))
@@ -50,23 +51,17 @@ def get_products(level):    # 获取分类下的小分类
             (By.CSS_SELECTOR, '#tab1 > table > tbody > '
                               'tr:nth-child('
                               + str(j) + ') > td.crosstabNodeMember > span'))).text
-        product['pro_name'] = point
-        for z in range(2, 14):  # 获取时间以及时间对应的价格
-            times = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#tab1 > table > tbody >'
-                                                                                ' tr:nth-child(1) > td:nth-child('
-                                                                                + str(z) + ') > span'))).text
-            price = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#tab1 > table > tbody '
+
+        time = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#tab1 > table > tbody >'
+                                                                                ' tr:nth-child(1) > td:nth-child(2) > span'))).text
+        price = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#tab1 > table > tbody '
                                                                                 '> tr:nth-child('
-                                                                                 + str(j) + ') > td:nth-child('
-                                                                                 + str(z) + ') > span'))).text
-            product.setdefault('time_price', {})[times] = price
-        result = collection.insert_one(product)
-        print(result)
+                                                                                 + str(j) + ') > td:nth-child(2) > span'))).text
+        product[time] = price
+        collection.update_one({'pro_name': point}, {'$set': {'time_price.' + time: price}}, True)
+        print(product)
 
 
 if __name__ == '__main__':
     reptile()
     browser.close()
-
-
-#tab > table > tbody > tr:nth-child(13) > td.crosstabNodeMember > span
