@@ -1,5 +1,5 @@
 """
-后期维护物价数据库时，使用此文件来更新
+后期维护批发物价数据库时，使用此文件来更新
 """
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -22,7 +22,7 @@ wait = WebDriverWait(browser, 100)
 # 数据库准备操作
 client = pymongo.MongoClient(host='localhost', port=27017)
 db = client.rept
-all_num = [1]   # , 9, 19, 59]
+all_num = [1, 9, 19, 59]
 point_num = [7, 9, 30, 8]
 col = ['meat', 'aqua', 'vege', 'frut']
 
@@ -58,7 +58,7 @@ def get_products(level):    # 获取分类下的小分类
                                                                                 '> tr:nth-child('
                                                                                  + str(j) + ') > td:nth-child(2) > span'))).text
         product[time] = price
-        collection.update_one({'pro_name': point}, {'$set': {'time_price.' + time: price}}, True)
+        collection.update_one({'pro_name': point}, {'$set': {'time_price.' + time: price}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
         print(product)
 
 

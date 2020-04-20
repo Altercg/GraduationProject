@@ -1,5 +1,5 @@
 """
-物价数据库为全空时，使用这个函数
+批发物价数据库为全空时，使用这个函数
 """
 
 from selenium import webdriver
