@@ -36,24 +36,24 @@ col = {'猪肉': 'http://zdscxx.moa.gov.cn:8080/report/%E5%9B%BD%E5%86%85%E7%8C%
 
 def get_pig():    # 获取猪肉价格
     collection = db['meat']
-    mell = {}
-    super = {}
+    fair = {}
+    supermarket = {}
     for i in range(2, 14):  # 一个j表示一行
         time = wait.until(EC.presence_of_element_located((
             By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                              'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_37.ml > span'))).text
-        super_price = wait.until(EC.presence_of_element_located(
+        supermarket_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_43.mc_82531737 > span'))).text
-        mell_price = wait.until(EC.presence_of_element_located(
+        fair_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_45.mc_82531737 > span'))).text
-        mell[time] = mell_price
-        super[time] = super_price
-    collection.update_one({'pro_name': '猪肉'}, {'$set': {'mell_price': mell}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
-    collection.update_one({'pro_name': '猪肉'}, {'$set': {'super_price': super}}, True)
-    print(mell)
-    print(super)
+        fair[time] = fair_price
+        supermarket[time] = supermarket_price
+    collection.update_one({'pro_name': '猪肉'}, {'$set': {'mell_price': fair}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
+    collection.update_one({'pro_name': '猪肉'}, {'$set': {'super_price': supermarket}}, True)
+    print(fair)
+    print(supermarket)
 
 
 def get_beef():    # 获取牛肉价格
