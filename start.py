@@ -43,6 +43,7 @@ class Login(QMainWindow):
         self.setLayout(vbox)
 
     windowList = []
+
     def buttonclicked(self):
         text = self.sender()
         print(text.text())

@@ -1,6 +1,12 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, \
-    QDialog, QWidget, QTreeWidget, QTreeWidgetItem
+    QDialog, QWidget, QTreeWidget, QTreeWidgetItem, QTextEdit, QGroupBox, QGridLayout
+from matplot import MyFigure
+import pymongo
+
+client = pymongo.MongoClient(host='localhost', port=27017)  # 连接
+db = client['rept']
+name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋']
 
 
 class run_free(QMainWindow):
@@ -10,10 +16,13 @@ class run_free(QMainWindow):
         self.setWindowIcon(QIcon('timg.jpg'))
         self.resize(1800, 1000)  # 窗口大小,宽/高
 
+        widget = QWidget()  # 为了布局添加widget窗口
+        layout = QHBoxLayout()  # 最外层水平布局
+
+        # 左侧的树控件
         self.tree = QTreeWidget()
         self.tree.setColumnCount(1)
         self.tree.setHeaderLabels(['keys'])
-        self.tree.setColumnWidth(0, 500)
 
         # 设置农产品物价信息根节点
         root1 = QTreeWidgetItem(self.tree)
@@ -116,8 +125,32 @@ class run_free(QMainWindow):
         child4_4 = QTreeWidgetItem(child4)
         child4_4.setText(0, "瓜类")
         QTreeWidgetItem(child4_4).setText(0, "西瓜")
+        # 添加到布局中
+        layout.addWidget(self.tree, 1)
+        self.tree.doubleClicked.connect(self.onTreeClicked)     # 双击信号
+        self.tree.setColumnWidth(0, 300)  # 设置树控件的宽度
 
-        self.setCentralWidget(self.tree)
+        # 右侧的控件显示图画
+        self.groupBox = QGroupBox()
+        layout.addWidget(self.groupBox, 3)
+
+        # 最后布局
+        self.setCentralWidget(widget)
+        widget.setLayout(layout)    # widget中设置布局
+
+    def onTreeClicked(self, index):
+        item = self.tree.currentItem()  # 当前的项
+        if item.text(0) in name:
+            col = item.parent().parent().text(0)
+            print(col)
+            if col == '畜禽品':
+                collection = db['meat']     # 指定集合
+                result = collection.find_one({'pro_name': item.text(0)})
+                print(result)   # 返回了一个字典
+        self.F = MyFigure(width=3, height=2, dpi=100,)
+        self.F.plotax(result['time_price'])
+        self.hbox = QGridLayout(self.groupBox)
+        self.hbox.addWidget(self.F, 0, 1)
 
     def closeEvent(self, event):  # 默认函数名，关闭应用弹出提示
         reply = QMessageBox.question(self, '退出提示', "你确定要退出吗？",
