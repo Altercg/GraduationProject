@@ -24,7 +24,7 @@ wait = WebDriverWait(browser, 100)
 client = pymongo.MongoClient(host='localhost', port=27017)
 db = client.rept    # 数据库的名称
 
-all_num = [1]#, 9, 19, 59]    # 大类
+all_num = [1, 9, 19, 59]    # 大类
 class_num = [[2, 6], [10, 13], [20, 24, 26, 31, 36, 40, 43, 45, 51, 54, 57], [60, 63, 65, 68]]  # 小类
 point_num = [[5, 4], [4, 7], [5, 3, 6, 6, 5, 4, 3, 7, 4, 4, 3], [4, 3, 4, 3]]   # 小类下的产品个数+2
 col = ['meat', 'aqua', 'vege', 'frut']

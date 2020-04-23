@@ -6,7 +6,11 @@ import pymongo
 
 client = pymongo.MongoClient(host='localhost', port=27017)  # 连接
 db = client['rept']
-name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋']
+name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋',
+        '大带鱼', '大黄花鱼', '活鲤鱼', '活草鱼', '白鲢活鱼', '活鲫鱼', '花鲢活鱼',
+        '菠菜', '芹菜', '油菜', '大白菜', '冬瓜', '黄瓜', '南瓜', '西葫芦', '白萝卜', '胡萝卜', '生姜', '土豆', '茄子',
+        '青椒', '西红柿', '菜花', '洋白菜', '豆角', '葱头', '大蒜', '蒜苔', '大葱', '韭菜', '莴笋', '生菜', '香菇', '平菇', '莲藕',
+        '富士苹果', '鸭梨', '巨峰葡萄', '菠萝', '香蕉', '西瓜', '橙子']
 
 
 class run_free(QMainWindow):
@@ -145,8 +149,14 @@ class run_free(QMainWindow):
             print(col)
             if col == '畜禽品':
                 collection = db['meat']     # 指定集合
-                result = collection.find_one({'pro_name': item.text(0)})
-                print(result)   # 返回了一个字典
+            elif col == '水产品':
+                collection = db['aqua']
+            elif col == '蔬菜':
+                collection = db['vege']
+            elif col == '水果':
+                collection = db['frut']
+            result = collection.find_one({'pro_name': item.text(0)})
+            print(result)   # 返回了一个字典
         self.F = MyFigure(width=3, height=2, dpi=100,)
         self.F.plotax(result['time_price'])
         self.hbox = QGridLayout(self.groupBox)

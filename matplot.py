@@ -20,7 +20,6 @@ class MyFigure(FigureCanvas):
         data = []
         for i in time:
             data.append(float(time_price[i]))
-        print(data)
         # y主刻度
         # self.ax.set_ylim(20, 100)
         # y_major_locator = MultipleLocator(10)
@@ -33,10 +32,8 @@ class MyFigure(FigureCanvas):
         x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         self.ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
         self.ax.set_xticklabels(time)
-        self.ax.plot(x, data)
-        # self.ax.legend()
-        # print(np.random.randn(100))
-        # self.ax.plot(np.random.randn(10), 'k--')
+        self.ax.plot(x, data, linestyle='-', marker='o')
+
 
 
 

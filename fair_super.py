@@ -162,6 +162,8 @@ def get_mell_veg():    # 获取蔬菜集市价格
         name = wait.until(EC.presence_of_element_located((
             By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) >'
                              ' table > tbody > tr:nth-child(1) > td.c_THIS_' + str(j) + '.xm > span'))).text
+        if name == '萝卜':
+            name = '白萝卜'
         for i in range(2, 14):  # i表示一列蔬菜，每列蔬菜的css不同
             time = wait.until(EC.presence_of_element_located((
                 By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
@@ -182,37 +184,13 @@ def get_super_veg():    # 获取蔬菜超市价格
     count = 0
     name_index = [28, 30, 32, 34, 36, 38, 40, 42]
     super_index = [47, 49, 51, 53, 55, 57, 59, 61]
-    super = {}
-    for j in name_index:  # 选择特定的蔬菜
-        mell = {}
-        name = wait.until(EC.presence_of_element_located((
-            By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) >'
-                             ' table > tbody > tr:nth-child(1) > td.c_THIS_' + str(j) + '.xm > span'))).text
-        for i in range(2, 14):  # i表示一列蔬菜，每列蔬菜的css不同
-            time = wait.until(EC.presence_of_element_located((
-                By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
-                                 'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_45.ml > span'))).text
-
-            super_price = wait.until(EC.presence_of_element_located(
-                (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
-                                 'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_'
-                                  + str(super_index[count]) + '.mc_82531737 > span'))).text
-            super[time] = super_price
-        collection.update_one({'pro_name': name}, {'$set': {'super_price': super}}, True)  # 嵌套字典更新方式，最后一个参数，如不存在插入
-        count += 1
-    print(super)
-
-
-def get_super_veg():    # 获取蔬菜超市价格
-    collection = db['vege']
-    count = 0
-    name_index = [28, 30, 32, 34, 36, 38, 40, 42]
-    super_index = [47, 49, 51, 53, 55, 57, 59, 61]
     for j in name_index:  # 选择特定的蔬菜
         super = {}
         name = wait.until(EC.presence_of_element_located((
             By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) >'
                              ' table > tbody > tr:nth-child(1) > td.c_THIS_' + str(j) + '.xm > span'))).text
+        if name == '萝卜':
+            name = '白萝卜'
         for i in range(2, 14):  # i表示一列蔬菜，每列蔬菜的css不同
             time = wait.until(EC.presence_of_element_located((
                 By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
