@@ -1,9 +1,11 @@
 import matplotlib as mpl    # 创建绘图窗口
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MultipleLocator, FormatStrFormatter # 设置刻度间隔
+from matplotlib.ticker import MultipleLocator, FormatStrFormatter   # 设置刻度间隔
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from numpy import sort
+import numpy as np
+import time
+
 
 mpl.rcParams['font.sans-serif'] = ['SimHei']    # 后即可正确显示中文  plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 mpl.use('Qt5Agg')    # print(matplotlib.get_backend())
@@ -11,15 +13,58 @@ mpl.use('Qt5Agg')    # print(matplotlib.get_backend())
 
 class MyFigure(FigureCanvas):
     def __init__(self, width=5, height=4, dpi=100):
+        plt.close('all')
         self.fig = Figure(figsize=(width, height), dpi=dpi)     # 设置图形的大小,以及每英寸的点数
         super(MyFigure, self).__init__(self.fig)    # 在父类中激活Figure窗口
-
-    def plotax(self, time_price):
         self.ax = self.fig.add_subplot(1, 1, 1)
-        time = sort(list(time_price.keys()))
+
+    def tree_wholesale(self, result):
+        self.ax.clear()
+        x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        self.ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+
+        time = np.sort(list(result.keys()))
         data = []
         for i in time:
-            data.append(float(time_price[i]))
+            data.append(float(result[i]))
+        self.ax.plot(x, data, linestyle='-', marker='o')
+
+        self.ax.set_xticklabels(time)
+        self.fig.canvas.draw()
+        self.fig.canvas.flush_events()
+
+    def differlocal(self, result, check1, check2, check3):
+        self.ax.clear()
+        x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        self.ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+
+        if check1 == 'True':
+            time_price = result['time_price']
+            time = np.sort(list(time_price.keys()))
+            data = []
+            for i in time:
+                data.append(float(time_price[i]))
+            self.ax.plot(x, data, linestyle='-', marker='o', label='批发价')
+        if check2 == 'True':
+            mell_price = result['mell_price']
+            time = np.sort(list(mell_price.keys()))
+            data = []
+            for i in time:
+                data.append(float(mell_price[i]))
+            self.ax.plot(x, data, linestyle='-', marker='o', label='集市价')
+        if check3 == 'True':
+            super_price = result['super_price']
+            time = np.sort(list(super_price.keys()))
+            data = []
+            for i in time:
+                data.append(float(super_price[i]))
+            self.ax.plot(x, data, linestyle='-', marker='o', label='超市价')
+        self.ax.set_xticklabels(time)
+
+        self.ax.legend()
+        self.fig.canvas.draw()
+        self.fig.canvas.flush_events()
+
         # y主刻度
         # self.ax.set_ylim(20, 100)
         # y_major_locator = MultipleLocator(10)
@@ -29,18 +74,6 @@ class MyFigure(FigureCanvas):
         # 次刻度
         # y_minor_locator = MultipleLocator(1)
         # self.ax.yaxis.set_minor_locator(y_minor_locator)
-        x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-        self.ax.set_xticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-        self.ax.set_xticklabels(time)
-        self.ax.plot(x, data, linestyle='-', marker='o')
-
-
-
-
-
-
-
-
 
 '''
 fig = plt.figure()    # fig 图片对象
