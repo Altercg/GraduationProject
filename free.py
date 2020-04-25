@@ -130,40 +130,52 @@ class run_free(QMainWindow):
         child4_4.setText(0, "瓜类")
         QTreeWidgetItem(child4_4).setText(0, "西瓜")
 
-        layout.addWidget(self.tree, 1)  # 树控件添加到布局中
+        layout.addWidget(self.tree, 1)  # 树控件添加到最大布局中
         self.tree.doubleClicked.connect(self.onTreeClicked)     # 双击信号，显示func
         self.tree.setColumnWidth(0, 300)  # 设置树控件的宽度
 
         # 右侧显示和选项放在groupBox里面
         self.groupBox = QGroupBox()
+        layout.addWidget(self.groupBox, 4)  # 组控件添加到最大布局中
         groupbox_vbox = QVBoxLayout(self.groupBox)
 
         self.func = QGroupBox()         # 右侧上面显示功能
-        func_box = QGridLayout(self.func)   # 右侧上面使用栅格布局
+        self.func.setProperty('name', 'func')
+        self.setStyleSheet('QGroupBox[name="func"]{border:none;}')  # qss选择器设置边框隐藏
+        groupbox_vbox.addWidget(self.func, 1)   # 组控件添加到右侧垂直布局中
+        func_box = QHBoxLayout(self.func)   # 右侧上面使用布局
+
+        self.func1 = QGroupBox()
+        self.func1.setTitle('地点比较')
+        func_box.addWidget(self.func1, 1)
+        func1_box = QVBoxLayout(self.func1)
+
         # 样式：同一农产品的不同地点物价比较的复选框
         self.checkBox1 = QCheckBox('批发价')
         self.checkBox2 = QCheckBox('集市价')
         self.checkBox3 = QCheckBox('超市价')
-        self.local_button = QPushButton('地点比较')
+        self.local_button = QPushButton('提交')
+        self.local_button.resize(self.local_button.sizeHint())
         self.checkBox1.setEnabled(False)
         self.checkBox2.setEnabled(False)
         self.checkBox3.setEnabled(False)
 
-        func_box.addWidget(self.checkBox1, 0, 0, 1, 1)
-        func_box.addWidget(self.checkBox2, 1, 0, 1, 1)
-        func_box.addWidget(self.checkBox3, 2, 0, 1, 1)
-        func_box.addWidget(self.local_button, 3, 0, 1, 1)
-        self.local_button.clicked.connect(self.differlocal_cmp)       # 功能一：同一农产品的不同地点物价比较
+        func1_box.addWidget(self.checkBox1)
+        func1_box.addWidget(self.checkBox2)
+        func1_box.addWidget(self.checkBox3)
+        func1_box.addWidget(self.local_button)
+        self.local_button.clicked.connect(self.differlocal_cmp)  # 功能一：同一农产品的不同地点物价比较
 
         # 功能二：同类农产品的比较和线性相关
+        self.func2 = QGroupBox()
+        self.func2.setTitle('同类与相关性比较')
+        func_box.addWidget(self.func2, 6)
+        self.func2_box = QGridLayout(self.func2)
 
         self.picture = QGroupBox()
+        groupbox_vbox.addWidget(self.picture, 6)
         self.F = MyFigure(width=3, height=2, dpi=100, )  # 每次点击触发新的画布生成
         self.picture_box = QGridLayout(self.picture)
-
-        groupbox_vbox.addWidget(self.func, 1)
-        groupbox_vbox.addWidget(self.picture, 6)
-        layout.addWidget(self.groupBox, 4)
 
         # 最后布局
         self.setCentralWidget(widget)
@@ -178,8 +190,14 @@ class run_free(QMainWindow):
         self.checkBox1.setChecked(False)
         self.checkBox2.setChecked(False)
         self.checkBox3.setChecked(False)
-        self.tree_draw_picture()
-        # 功能二：同类农产品的比较和线性相关
+        self.tree_draw_picture()    # 最初的显示图
+
+    # 功能二：同类农产品的比较和线性相关
+    def same_classification_cmp(self):
+        classification = self.result['classfication']
+        results = self.collection.find({'classfication': classification})
+        for result in results:
+            print(result)
 
     def tree_draw_picture(self):
         # 当前的项
@@ -188,14 +206,14 @@ class run_free(QMainWindow):
         if item.text(0) in name:
             col = item.parent().parent().text(0)
             if col == '畜禽品':
-                collection = db['meat']
+                self.collection = db['meat']
             elif col == '水产品':
-                collection = db['aqua']
+                self.collection = db['aqua']
             elif col == '蔬菜':
-                collection = db['vege']
+                self.collection = db['vege']
             elif col == '水果':
-                collection = db['frut']
-            self.result = collection.find_one({'pro_name': item.text(0)})
+                self.collection = db['frut']
+            self.result = self.collection.find_one({'pro_name': item.text(0)})
             # 复选框的呈现状态
             select = ''
             if 'super_price' in self.result:
@@ -221,10 +239,11 @@ class run_free(QMainWindow):
             elif select == 'super_price':
                 self.checkBox3.setChecked(True)
 
+            self.same_classification_cmp()
             self.F.tree_wholesale(self.result[select])
             self.picture_box.addWidget(self.F, 0, 1)
 
-    # 地点比较
+    # 功能一：同一农产品的不同地点物价比较
     def differlocal_cmp(self):
         check1 = str(self.checkBox1.isChecked())    # time_price
         check2 = str(self.checkBox2.isChecked())    # mall_price
