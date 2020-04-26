@@ -18,7 +18,7 @@ class run_free(QMainWindow):
         super(run_free, self).__init__(parent)  # 显示调用父类的变量
         self.setWindowTitle('农产品物价_免费版')
         self.setWindowIcon(QIcon('timg.jpg'))
-        self.resize(1800, 1000)  # 窗口大小,宽/高
+        self.resize(2100, 1200)  # 窗口大小,宽/高
 
         widget = QWidget()  # 为了布局添加widget窗口
         layout = QHBoxLayout()  # 最外层水平布局

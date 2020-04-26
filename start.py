@@ -57,6 +57,7 @@ class Login(QMainWindow):
             company_main = run_company(self)
             self.windowList.append(company_main)
             self.close()
+            # company_main.showMaximized()
             company_main.show()
 
     def resizeEvent(self, event):
