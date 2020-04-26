@@ -46,7 +46,7 @@ class MyFigure(FigureCanvas):
                 data.append(float(time_price[i]))
             self.ax.plot(x, data, linestyle='-', marker='o', label='批发价')
         if check2 == 'True':
-            mell_price = result['mell_price']
+            mell_price = result['fair_price']
             time = np.sort(list(mell_price.keys()))
             data = []
             for i in time:

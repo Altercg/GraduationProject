@@ -194,8 +194,8 @@ class run_free(QMainWindow):
 
     # 功能二：同类农产品的比较和线性相关
     def same_classification_cmp(self):
-        classification = self.result['classfication']
-        results = self.collection.find({'classfication': classification})
+        classification = self.result['classification']
+        results = self.collection.find({'classification': classification})
         for result in results:
             print(result)
 
@@ -221,9 +221,9 @@ class run_free(QMainWindow):
                 select = 'super_price'
             else:
                 self.checkBox3.setEnabled(False)
-            if 'mell_price' in self.result:
+            if 'fair_price' in self.result:
                 self.checkBox2.setEnabled(True)
-                select = 'mell_price'
+                select = 'fair_price'
             else:
                 self.checkBox2.setEnabled(False)
             if 'time_price' in self.result:
@@ -234,7 +234,7 @@ class run_free(QMainWindow):
             # 复选框改变显示图片
             if select == 'time_price':
                 self.checkBox1.setChecked(True)
-            elif select == 'mell_price':
+            elif select == 'fair_price':
                 self.checkBox2.setChecked(True)
             elif select == 'super_price':
                 self.checkBox3.setChecked(True)
