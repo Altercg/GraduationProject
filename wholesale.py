@@ -70,7 +70,7 @@ def get_products(level, sm_level, classification):    # 获取产品
                               + str(p) + ') > td.crosstabNodeMember > span'))).text
         product['pro_name'] = point
         # 存入小类
-        product['classfication'] = classification
+        product['classification'] = classification
         # 获取时间以及时间对应的价格
         for z in range(2, 14):
             times = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#tab1 > table > tbody >'
@@ -82,7 +82,7 @@ def get_products(level, sm_level, classification):    # 获取产品
                                                                                  + str(z) + ') > span'))).text
             product.setdefault('time_price', {})[times] = price     # 字典中的值通过设置成为另一个集合
         # 文件生成放入数据库
-        result = collection.insert_one(product)
+        collection.insert_one(product)
         print(product)
 
 

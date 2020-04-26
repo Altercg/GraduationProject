@@ -50,7 +50,7 @@ def get_pig():    # 获取猪肉价格
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_45.mc_82531737 > span'))).text
         fair[time] = fair_price
         supermarket[time] = supermarket_price
-    collection.update_one({'pro_name': '猪肉'}, {'$set': {'mell_price': fair}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
+    collection.update_one({'pro_name': '猪肉'}, {'$set': {'fair_price': fair}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
     collection.update_one({'pro_name': '猪肉'}, {'$set': {'super_price': supermarket}}, True)
     print(fair)
     print(supermarket)
@@ -58,107 +58,107 @@ def get_pig():    # 获取猪肉价格
 
 def get_beef():    # 获取牛肉价格
     collection = db['meat']
-    mell = {}
+    fair = {}
     super = {}
     for i in range(2, 14):  # 一个j表示一行
         time = wait.until(EC.presence_of_element_located((
             By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                              'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_35.ml > span'))).text
 
-        mell_price = wait.until(EC.presence_of_element_located(
+        fair_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_37.mc_82531737 > span'))).text
 
         super_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_39.mc_82531737 > span'))).text
-        mell[time] = mell_price
+        fair[time] = fair_price
         super[time] = super_price
-    collection.update_one({'pro_name': '牛肉'}, {'$set': {'mell_price': mell}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
+    collection.update_one({'pro_name': '牛肉'}, {'$set': {'fair_price': fair}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
     collection.update_one({'pro_name': '牛肉'}, {'$set': {'super_price': super}}, True)
-    print(mell)
+    print(fair)
     print(super)
 
 
 def get_mutton():    # 获取羊肉价格
     collection = db['meat']
-    mell = {}
+    fair = {}
     super = {}
     for i in range(2, 14):  # 一个j表示一行
         time = wait.until(EC.presence_of_element_located((
             By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                              'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_35.ml > span'))).text
 
-        mell_price = wait.until(EC.presence_of_element_located(
+        fair_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_37.mc_82531737 > span'))).text
 
         super_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_39.mc_82531737 > span'))).text
-        mell[time] = mell_price
+        fair[time] = fair_price
         super[time] = super_price
-    collection.update_one({'pro_name': '羊肉'}, {'$set': {'mell_price': mell}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
+    collection.update_one({'pro_name': '羊肉'}, {'$set': {'fair_price': fair}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
     collection.update_one({'pro_name': '羊肉'}, {'$set': {'super_price': super}}, True)
-    print(mell)
+    print(fair)
     print(super)
 
 
 def get_chick():    # 获取鸡肉价格
     collection = db['meat']
-    mell = {}
+    fair = {}
     super = {}
     for i in range(2, 14):  # 一个j表示一行
         time = wait.until(EC.presence_of_element_located((
             By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                              'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_41.ml > span'))).text
 
-        mell_price = wait.until(EC.presence_of_element_located(
+        fair_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_43.mc_82531737 > span'))).text
 
         super_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_49.mc_82531737 > span'))).text
-        mell[time] = mell_price
+        fair[time] = fair_price
         super[time] = super_price
-    collection.update_one({'pro_name': '白条鸡'}, {'$set': {'mell_price': mell}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
+    collection.update_one({'pro_name': '白条鸡'}, {'$set': {'fair_price': fair}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
     collection.update_one({'pro_name': '白条鸡'}, {'$set': {'super_price': super}}, True)
-    print(mell)
+    print(fair)
     print(super)
 
 
 def get_egg():    # 获取鸡蛋价格
     collection = db['meat']
-    mell = {}
+    fair = {}
     super = {}
     for i in range(2, 14):  # 一个j表示一行
         time = wait.until(EC.presence_of_element_located((
             By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                              'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_35.ml > span'))).text
 
-        mell_price = wait.until(EC.presence_of_element_located(
+        fair_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_37.mc_82531737 > span'))).text
 
         super_price = wait.until(EC.presence_of_element_located(
             (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                               'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_39.mc_82531737 > span'))).text
-        mell[time] = mell_price
+        fair[time] = fair_price
         super[time] = super_price
-    collection.update_one({'pro_name': '鸡蛋'}, {'$set': {'mell_price': mell}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
+    collection.update_one({'pro_name': '鸡蛋'}, {'$set': {'fair_price': fair}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
     collection.update_one({'pro_name': '鸡蛋'}, {'$set': {'super_price': super}}, True)
-    print(mell)
+    print(fair)
     print(super)
 
 
-def get_mell_veg():    # 获取蔬菜集市价格
+def get_fair_veg():    # 获取蔬菜集市价格
     collection = db['vege']
     count = 0
     name_index = [28, 30, 32, 34, 36, 38, 40, 42]
-    mell_index = [47, 49, 51, 53, 55, 57, 59, 61]
+    fair_index = [47, 49, 51, 53, 55, 57, 59, 61]
     for j in name_index:    # 选择特定的蔬菜
-        mell = {}
+        fair = {}
         name = wait.until(EC.presence_of_element_located((
             By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) >'
                              ' table > tbody > tr:nth-child(1) > td.c_THIS_' + str(j) + '.xm > span'))).text
@@ -169,14 +169,14 @@ def get_mell_veg():    # 获取蔬菜集市价格
                 By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                                  'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_45.ml > span'))).text
 
-            mell_price = wait.until(EC.presence_of_element_located(
+            fair_price = wait.until(EC.presence_of_element_located(
                 (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                                   'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_'
-                                  + str(mell_index[count]) + '.mc_82531737 > span'))).text
-            mell[time] = mell_price
-        collection.update_one({'pro_name': name}, {'$set': {'mell_price': mell}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
+                                  + str(fair_index[count]) + '.mc_82531737 > span'))).text
+            fair[time] = fair_price
+        collection.update_one({'pro_name': name}, {'$set': {'fair_price': fair}}, True)       # 嵌套字典更新方式，最后一个参数，如不存在插入
         count += 1
-        print(mell)
+        print(name, fair)
 
 
 def get_super_veg():    # 获取蔬菜超市价格
@@ -203,16 +203,16 @@ def get_super_veg():    # 获取蔬菜超市价格
             super[time] = super_price
         collection.update_one({'pro_name': name}, {'$set': {'super_price': super}}, True)  # 嵌套字典更新方式，最后一个参数，如不存在插入
         count += 1
-    print(super)
+    print(name, super)
 
 
-def get_mell_frut():    # 获取水果集市价格
+def get_fair_frut():    # 获取水果集市价格
     collection = db['frut']
     count = 0
     name_index = [26, 28, 30, 32, 34]
-    mell_index = [39, 41, 43, 45, 47]
+    fair_index = [39, 41, 43, 45, 47]
     for j in name_index:  # 选择特定的蔬菜
-        mell = {}
+        fair = {}
         name = wait.until(EC.presence_of_element_located((
             By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                              'table > tbody > tr:nth-child(1) > td.c_THIS_' + str(j) + '.xm > span'))).text
@@ -225,14 +225,14 @@ def get_mell_frut():    # 获取水果集市价格
                 By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                                  'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_37.ml > span'))).text
 
-            super_price = wait.until(EC.presence_of_element_located(
+            fair_price = wait.until(EC.presence_of_element_located(
                 (By.CSS_SELECTOR, 'body > table > tbody > tr > td > table > tbody > tr:nth-child(3) > td:nth-child(2) > '
                                   'table > tbody > tr:nth-child(' + str(i) + ') > td.c_THIS_'
-                                   + str(mell_index[count]) + '.mc_82531737 > span'))).text
-            mell[time] = super_price
-        collection.update_one({'pro_name': name}, {'$set': {'mell_price': mell}}, True)  # 嵌套字典更新方式，最后一个参数，如不存在插入
+                                   + str(fair_index[count]) + '.mc_82531737 > span'))).text
+            fair[time] = fair_price
+        collection.update_one({'pro_name': name}, {'$set': {'fair_price': fair}}, True)  # 嵌套字典更新方式，最后一个参数，如不存在插入
         count += 1
-        print(name, mell)
+        print(name, fair)
 
 
 def get_super_frut():    # 获取水果超市价格
@@ -261,7 +261,7 @@ def get_super_frut():    # 获取水果超市价格
             super[time] = super_price
         collection.update_one({'pro_name': name}, {'$set': {'super_price': super}}, True)  # 嵌套字典更新方式，最后一个参数，如不存在插入
         count += 1
-        print(super)
+        print(name, super)
 
 
 if __name__ == '__main__':
@@ -276,11 +276,11 @@ if __name__ == '__main__':
     browser.get(col['鸡蛋'])
     get_egg()
     browser.get(col['蔬菜集市'])
-    get_mell_veg()
+    get_fair_veg()
     browser.get(col['蔬菜超市'])
     get_super_veg()
     browser.get(col['水果集市'])
-    get_mell_frut()
+    get_fair_frut()
     browser.get(col['水果超市'])
     get_super_frut()
     browser.close()
