@@ -16,9 +16,9 @@ name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋',
         '富士苹果', '鸭梨', '巨峰葡萄', '菠萝', '香蕉', '西瓜', '橙子']
 
 
-class run_company(QMainWindow):
+class run(QMainWindow):
     def __init__(self, parent=None):
-        super(run_company, self).__init__(parent)  # 显示调用父类的变量
+        super(run, self).__init__(parent)  # 显示调用父类的变量
         self.setWindowTitle('农产品物价_企业版')
         self.setWindowIcon(QIcon('timg.jpg'))
         self.resize(2100, 1200)  # 窗口大小,宽/高
@@ -52,11 +52,11 @@ class run_company(QMainWindow):
         child2 = QTreeWidgetItem(root1)
         child2.setText(0, '水产品')
         child2_1 = QTreeWidgetItem(child2)
-        child2_1.setText(0,  "淡水鱼")
+        child2_1.setText(0,  "海水鱼")
         QTreeWidgetItem(child2_1).setText(0, "大带鱼")
         QTreeWidgetItem(child2_1).setText(0, "大黄花鱼")
         child2_2 = QTreeWidgetItem(child2)
-        child2_2.setText(0,  "海水鱼")
+        child2_2.setText(0,  "淡水鱼")
         QTreeWidgetItem(child2_2).setText(0, "活鲤鱼")
         QTreeWidgetItem(child2_2).setText(0, "活草鱼")
         QTreeWidgetItem(child2_2).setText(0, "白鲢活鱼")
@@ -164,30 +164,30 @@ class run_company(QMainWindow):
         # 指定集合
         if item.text(0) in name:
             col = item.parent().parent().text(0)
-        if col == '畜禽品':
-            self.collection = db['meat']
-        elif col == '水产品':
-            self.collection = db['aqua']
-        elif col == '蔬菜':
-            self.collection = db['vege']
-        elif col == '水果':
-            self.collection = db['frut']
+            if col == '畜禽品':
+                self.collection = db['meat']
+            elif col == '水产品':
+                self.collection = db['aqua']
+            elif col == '蔬菜':
+                self.collection = db['vege']
+            elif col == '水果':
+                self.collection = db['frut']
 
         # 地点比较的数据
-        self.result = self.collection.find_one({'pro_name': item.text(0)})
-        initData(self.result)   # 地点比较的图生成
-        self.draw_local_picture()
-        # 同类比较的数据
-        self.results = self.collection.find({'classfication': self.result['classfication']})
-        initDatas(self.results)
-        self.draw_same_picture()
+            self.result = self.collection.find_one({'pro_name': item.text(0)})
+            # initData(self.result)   # 地点比较的图生成
+            self.draw_local_picture()
+            # 同类比较的数据
+            self.results = self.collection.find({'classification': self.result['classification']})
+            # initDatas(self.results)
+            self.draw_same_picture()
 
     def draw_local_picture(self):   # 地点比较显示
         for i in range(self.local_picture.count()):
             self.local_picture.itemAt(i).widget().deleteLater()
         self.localHtml = QWebEngineView()
         # 打开本地html文件
-        url = os.getcwd() + '/' + self.tree.currentItem().text(0) + '.html'
+        url = os.getcwd() + '/showhtml/' + self.tree.currentItem().text(0) + '.html'
         self.localHtml.load(QUrl.fromLocalFile(url))
         self.local_picture.addWidget(self.localHtml)
 
@@ -196,7 +196,7 @@ class run_company(QMainWindow):
             self.same_classification_picture.itemAt(i).widget().deleteLater()
         self.sameHtml = QWebEngineView()
         # 打开本地html文件
-        url = os.getcwd() + '/' + self.tree.currentItem().parent().text(0) + '.html'
+        url = os.getcwd() + '/showhtml/' + self.tree.currentItem().parent().text(0) + '.html'
         self.sameHtml.load(QUrl.fromLocalFile(url))
         self.same_classification_picture.addWidget(self.sameHtml)
 
