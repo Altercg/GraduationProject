@@ -7,6 +7,7 @@ import pymongo
 from echart import initData, initDatas
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
+'''
 client = pymongo.MongoClient(host='localhost', port=27017)  # 连接
 db = client['rept']
 name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋',
@@ -14,7 +15,7 @@ name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋',
         '菠菜', '芹菜', '油菜', '大白菜', '冬瓜', '黄瓜', '南瓜', '西葫芦', '白萝卜', '胡萝卜', '生姜', '土豆', '茄子',
         '青椒', '西红柿', '菜花', '洋白菜', '豆角', '葱头', '大蒜', '蒜苔', '大葱', '韭菜', '莴笋', '生菜', '香菇', '平菇', '莲藕',
         '富士苹果', '鸭梨', '巨峰葡萄', '菠萝', '香蕉', '西瓜', '橙子']
-
+'''
 
 class run(QMainWindow):
     def __init__(self, parent=None):
@@ -159,6 +160,8 @@ class run(QMainWindow):
 
     # 点击的形成func
     def onTreeClicked(self, index):
+        """
+        维护更新的时候调用
         # 当前的项
         item = self.tree.currentItem()
         # 指定集合
@@ -173,14 +176,15 @@ class run(QMainWindow):
             elif col == '水果':
                 self.collection = db['frut']
 
-        # 地点比较的数据
+            # 地点比较的数据
             self.result = self.collection.find_one({'pro_name': item.text(0)})
             # initData(self.result)   # 地点比较的图生成
-            self.draw_local_picture()
             # 同类比较的数据
             self.results = self.collection.find({'classification': self.result['classification']})
             # initDatas(self.results)
-            self.draw_same_picture()
+        """
+        self.draw_local_picture()
+        self.draw_same_picture()
 
     def draw_local_picture(self):   # 地点比较显示
         for i in range(self.local_picture.count()):

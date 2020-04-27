@@ -1,15 +1,16 @@
 import sys
+import pymongo
 from run import run
-from register import register
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+from register_login import register, login
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMessageBox
 from PyQt5.QtGui import QIcon, QPalette, QBrush, QPixmap   # 图标与字体
 from PyQt5.QtWidgets import QDesktopWidget, QPushButton, QHBoxLayout, \
     QVBoxLayout, QDialog
 
 
-class Login(QMainWindow):
+class Start(QMainWindow):
     def __init__(self):
-        super(Login, self).__init__()  # 显示调用父类的变量
+        super(Start, self).__init__()  # 显示调用父类的变量
         self.initui()
 
     def initui(self):
@@ -39,21 +40,38 @@ class Login(QMainWindow):
         widget = QWidget()
         widget.setLayout(vbox)
         self.setCentralWidget(widget)
-
         self.setLayout(vbox)
 
     windowList = []
-
     def buttonclicked(self):
         text = self.sender()
         print(text.text())
         if text.text() == '注册':
-            pass
+            self.reg = register()
+            self.reg.show()
         if text.text() == '进入':
-            run_main = run(self)
-            self.windowList.append(run_main)    # 加入列表可以实现一个主窗口到另一个主窗口
-            self.close()        # 登入窗口关闭
-            run_main.show()     # 运行窗口显示
+            self.result = login()
+            self.result.button.clicked.connect(self.login_buttonClick)
+            self.result.show()
+
+    def login_buttonClick(self):
+        client = pymongo.MongoClient(host='localhost', port=27017)  # 连接
+        db = client['client']  # 数据库
+        collection = db['client']
+        name = self.result.nameEdit.text()
+        password = self.result.passwordEdit.text()
+        re = collection.find_one({'name': name})
+        if re:
+            if password == re['password']:
+                self.result.close()
+                run_main = run()
+                self.windowList.append(run_main)  # 加入列表可以实现一个主窗口到另一个主窗口
+                self.close()  # 登入窗口关闭
+                run_main.show()  # 运行窗口显示
+            else:
+                QMessageBox.critical(self, '错误', '密码错误', QMessageBox.Yes)
+        else:
+            QMessageBox.critical(self, '错误', '用户不存在', QMessageBox.Yes)
 
     # 设置背景图片
     def resizeEvent(self, event):
@@ -73,6 +91,6 @@ class Login(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    login = Login()
-    login.show()
+    start = Start()
+    start.show()
     sys.exit(app.exec_())
