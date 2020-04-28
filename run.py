@@ -1,13 +1,13 @@
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMainWindow, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QMessageBox, \
-    QDialog, QWidget, QTreeWidget, QTreeWidgetItem, QTextEdit, QGroupBox, QGridLayout, QCheckBox, QTabWidget
 import os
 import pymongo
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QMessageBox, QWidget, QTreeWidget, QTreeWidgetItem,\
+    QGridLayout, QTabWidget
+from exponential_smoothing import MyFigure      # from matplot import MyFigure
 from echart import initData, initDatas
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
-'''
 client = pymongo.MongoClient(host='localhost', port=27017)  # 连接
 db = client['rept']
 name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋',
@@ -15,7 +15,7 @@ name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋',
         '菠菜', '芹菜', '油菜', '大白菜', '冬瓜', '黄瓜', '南瓜', '西葫芦', '白萝卜', '胡萝卜', '生姜', '土豆', '茄子',
         '青椒', '西红柿', '菜花', '洋白菜', '豆角', '葱头', '大蒜', '蒜苔', '大葱', '韭菜', '莴笋', '生菜', '香菇', '平菇', '莲藕',
         '富士苹果', '鸭梨', '巨峰葡萄', '菠萝', '香蕉', '西瓜', '橙子']
-'''
+
 
 class run(QMainWindow):
     def __init__(self, parent=None):
@@ -146,12 +146,14 @@ class run(QMainWindow):
         self.tab1 = QWidget()
         self.tab2 = QWidget()
         self.tab3 = QWidget()
-        self.tab.addTab(self.tab1, "地点比较")
-        self.tab.addTab(self.tab2, "同类比较")
-        self.tab.addTab(self.tab3, "时间序列")
-        self.local_picture = QGridLayout(self.tab1)     # 三个选项卡的三个布局
-        self.same_classification_picture = QGridLayout(self.tab2)
-        self.time_picture = QGridLayout(self.tab3)
+        self.tab.addTab(self.tab1, "时间序列")
+        self.tab.addTab(self.tab2, "地点比较")
+        self.tab.addTab(self.tab3, "同类比较")
+
+        self.local_picture = QGridLayout(self.tab2)     # 三个选项卡的三个布局
+        self.same_classification_picture = QGridLayout(self.tab3)
+        self.F = MyFigure(width=3, height=2, dpi=100)   # 创建画布
+        self.time_picture = QHBoxLayout(self.tab1)
         layout.addWidget(self.tab, 4)  # 组控件添加到最大布局中
 
         # 最后布局
@@ -160,31 +162,31 @@ class run(QMainWindow):
 
     # 点击的形成func
     def onTreeClicked(self, index):
-        """
-        维护更新的时候调用
         # 当前的项
         item = self.tree.currentItem()
         # 指定集合
         if item.text(0) in name:
-            col = item.parent().parent().text(0)
-            if col == '畜禽品':
+            self.col = item.parent().parent().text(0)
+            if self.col == '畜禽品':
                 self.collection = db['meat']
-            elif col == '水产品':
+            elif self.col == '水产品':
                 self.collection = db['aqua']
-            elif col == '蔬菜':
+            elif self.col == '蔬菜':
                 self.collection = db['vege']
-            elif col == '水果':
+            elif self.col == '水果':
                 self.collection = db['frut']
 
             # 地点比较的数据
             self.result = self.collection.find_one({'pro_name': item.text(0)})
-            # initData(self.result)   # 地点比较的图生成
+            initData(self.result)   # 地点比较的图生成
+
             # 同类比较的数据
             self.results = self.collection.find({'classification': self.result['classification']})
-            # initDatas(self.results)
-        """
-        self.draw_local_picture()
-        self.draw_same_picture()
+            initDatas(self.results)
+
+            self.draw_local_picture()
+            self.draw_same_picture()
+            self.draw_time_series()
 
     def draw_local_picture(self):   # 地点比较显示
         for i in range(self.local_picture.count()):
@@ -203,6 +205,14 @@ class run(QMainWindow):
         url = os.getcwd() + '/showhtml/' + self.tree.currentItem().parent().text(0) + '.html'
         self.sameHtml.load(QUrl.fromLocalFile(url))
         self.same_classification_picture.addWidget(self.sameHtml)
+
+    def draw_time_series(self):
+        if self.tree.currentItem().text(0) == '橙子':
+            self.F.main(self.result['fair_price'])   # 绘制时间序列图    # self.F.tree_wholesale(self.result['time_price'])
+            self.time_picture.addWidget(self.F)
+        else:
+            self.F.main(self.result['time_price'])  # 绘制时间序列图
+            self.time_picture.addWidget(self.F)
 
     def closeEvent(self, event):  # 默认函数名，关闭应用弹出提示
         reply = QMessageBox.question(self, '退出提示', "你确定要退出吗？",

@@ -10,6 +10,7 @@ def initData(result):   # 折线图
         super_price = result['super_price']
         time = list(super_price.keys())     # 数据时间可能是乱的，需要排序
         time.sort()
+        time = time[-12:]
         data = []
         for i in time:
             data.append(float(super_price[i]))      # 按照时间插入数据
@@ -23,6 +24,7 @@ def initData(result):   # 折线图
         fair_price = result['fair_price']
         time = list(fair_price.keys())
         time.sort()
+        time = time[-12:]
         data = []
         for i in time:
             data.append(float(fair_price[i]))
@@ -36,6 +38,7 @@ def initData(result):   # 折线图
         time_price = result['time_price']
         time = list(time_price.keys())
         time.sort()
+        time = time[-12:]
         data = []
         for i in time:
             data.append(float(time_price[i]))
@@ -75,6 +78,7 @@ def initDatas(results):  # 柱状图
             time_price = result['time_price']
             time = list(time_price.keys())
             time.sort()
+            time = time[-12:]
             data = []
             for i in time:
                 data.append(float(time_price[i]))
