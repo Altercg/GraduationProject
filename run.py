@@ -20,7 +20,7 @@ name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋',
 class run(QMainWindow):
     def __init__(self, parent=None):
         super(run, self).__init__(parent)  # 显示调用父类的变量
-        self.setWindowTitle('农产品物价_企业版')
+        self.setWindowTitle('农产品物价分析')
         self.setWindowIcon(QIcon('timg.jpg'))
         self.resize(2100, 1200)  # 窗口大小,宽/高
 
