@@ -30,8 +30,7 @@ class MyFigure(FigureCanvas):
         return s2
 
     def main(self, time_price):
-        alpha = .70         # 设置alphe，即平滑系数
-        # pre_year = np.array([2016, 2017])   # 将需要预测的两年存入numpy的array对象里
+        alpha = 0.5        # 设置alphe，即平滑系数
         # 所有时间和数据
         time = list(time_price.keys())
         time.sort()

@@ -5,6 +5,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QMessageBox, QWidget, QTreeWidget, QTreeWidgetItem,\
     QGridLayout, QTabWidget
 from exponential_smoothing import MyFigure      # from matplot import MyFigure
+# from exponential_smoothing2 import MyFigure
 from echart import initData, initDatas
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
@@ -207,6 +208,8 @@ class run(QMainWindow):
         self.same_classification_picture.addWidget(self.sameHtml)
 
     def draw_time_series(self):
+        # self.F.plotDoubleExponentialSmoothing(self.result['time_price'], alphas=[0.9], betas=[0.9])
+        # self.time_picture.addWidget(self.F)
         if self.tree.currentItem().text(0) == '橙子':
             self.F.main(self.result['fair_price'])   # 绘制时间序列图    # self.F.tree_wholesale(self.result['time_price'])
             self.time_picture.addWidget(self.F)
@@ -221,3 +224,5 @@ class run(QMainWindow):
             event.accept()
         else:
             event.ignore()
+
+

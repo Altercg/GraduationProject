@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QDesktopWidget, QPushButton, QHBoxLayout, \
 
 class Start(QMainWindow):
     def __init__(self):
-        super(Start, self).__init__()  # 显示调用父类的变量
+        super().__init__()  # Python2.7中super要有这两个实参，显示调用父类的变量
         self.initui()
 
     def initui(self):
