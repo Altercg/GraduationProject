@@ -55,7 +55,9 @@ class Start(QMainWindow):
             self.result.show()
 
     def login_buttonClick(self):
-        client = pymongo.MongoClient(host='localhost', port=27017)  # 连接
+        # client = pymongo.MongoClient(host='localhost', port=27017)  # 连接
+        client = pymongo.MongoClient(host='106.54.129.73', port=27017, username='client', password='client',
+                                     authSource='client', authMechanism='SCRAM-SHA-1')
         db = client['client']  # 数据库
         collection = db['client']
         name = self.result.nameEdit.text()

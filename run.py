@@ -9,7 +9,9 @@ from exponential_smoothing import MyFigure      # from matplot import MyFigure
 from echart import initData, initDatas
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
-client = pymongo.MongoClient(host='localhost', port=27017)  # 连接
+# client = pymongo.MongoClient(host='localhost', port=27017)  # 连接
+client = pymongo.MongoClient(host='106.54.129.73', port=27017, username='rept', password='rept',
+                             authSource='rept', authMechanism='SCRAM-SHA-1')
 db = client['rept']
 name = ['猪肉', '牛肉', '羊肉', '白条鸡', '鸡蛋',
         '大带鱼', '大黄花鱼', '活鲤鱼', '活草鱼', '白鲢活鱼', '活鲫鱼', '花鲢活鱼',
