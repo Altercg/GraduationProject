@@ -15,7 +15,7 @@ class Start(QMainWindow):
 
     def initui(self):
         self.setWindowTitle('农产品物价分析')
-        self.setWindowIcon(QIcon('timg.jpg'))
+        self.setWindowIcon(QIcon('./img/timg.jpg'))
         self.resize(900, 600)     # 窗口大小。宽/高
         self.center()   # 移动到屏幕的中心
 
@@ -78,7 +78,7 @@ class Start(QMainWindow):
     # 设置背景图片
     def resizeEvent(self, event):
         palette = QPalette()
-        pix = QPixmap("bg.jpg")
+        pix = QPixmap("./img/bg.jpg")
         pix = pix.scaled(self.width(), self.height())
         palette.setBrush(QPalette.Background, QBrush(pix))
         self.setPalette(palette)

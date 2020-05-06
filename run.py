@@ -24,7 +24,7 @@ class run(QMainWindow):
     def __init__(self, parent=None):
         super(run, self).__init__(parent)  # 显示调用父类的变量
         self.setWindowTitle('农产品物价分析')
-        self.setWindowIcon(QIcon('timg.jpg'))
+        self.setWindowIcon(QIcon('./img/timg.jpg'))
         self.resize(2100, 1200)  # 窗口大小,宽/高
 
         widget = QWidget()  # 为了布局添加widget窗口
