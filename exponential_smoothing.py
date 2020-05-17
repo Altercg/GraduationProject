@@ -30,7 +30,7 @@ class MyFigure(FigureCanvas):
         return s2
 
     def main(self, time_price):
-        alpha = 0.5        # 设置alphe，即平滑系数
+        alpha = 0.7        # 设置alphe，即平滑系数
         # 所有时间和数据
         time = list(time_price.keys())
         time.sort()
